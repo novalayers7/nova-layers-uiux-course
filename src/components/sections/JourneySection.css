@@ -10,6 +10,13 @@
   background: var(--paper, #f7f7f4);
   color: var(--ink, #101116);
   scroll-margin-top: 110px;
+  box-sizing: border-box;
+}
+
+.az-journey *,
+.az-journey *::before,
+.az-journey *::after {
+  box-sizing: border-box;
 }
 
 .az-journey::before {
@@ -27,24 +34,16 @@
   pointer-events: none;
 }
 
-.az-journey > .reveal {
-  position: relative;
-  z-index: 1;
-}
-
 /* HEADING */
-
-.az-journey h2 {
-  margin: 0;
-  font-size: clamp(58px, 8vw, 112px);
-  line-height: .98;
-  letter-spacing: -.1em;
-}
 
 .az-title {
   display: flex;
   align-items: baseline;
   gap: .2em;
+  margin: 0;
+  font-size: clamp(58px, 8vw, 112px);
+  line-height: .98;
+  letter-spacing: -.1em;
 }
 
 .az-title-sequence {
@@ -132,7 +131,6 @@
   letter-spacing: .16em;
   text-transform: uppercase;
   white-space: nowrap;
-  animation: az-hint-pulse 3s ease-in-out infinite;
 }
 
 .az-wheel-hint span {
@@ -140,8 +138,9 @@
   margin-left: 9px;
   color: var(--violet, #8d5cff);
   font-size: 14px;
-  animation: az-hint-nudge 3s ease-in-out infinite;
 }
+
+/* DESKTOP WHEEL */
 
 .az-wheel-stage {
   width: 760px;
@@ -156,7 +155,7 @@
   overflow: visible;
 }
 
-.az-wheel-stage:active {
+.az-wheel-stage.is-dragging {
   cursor: grabbing;
 }
 
@@ -168,7 +167,7 @@
   flex-shrink: 0;
   border: 1px solid rgba(141, 92, 255, .38);
   border-radius: 50%;
-  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform;
 }
 
 .az-wheel::before,
@@ -208,7 +207,7 @@
   text-transform: uppercase;
   text-align: center;
   overflow-wrap: anywhere;
-  transition: color .3s, scale .3s;
+  transition: color .25s ease;
 }
 
 .az-wheel-label span {
@@ -219,12 +218,13 @@
 }
 
 .az-wheel-label.active {
-  color: var(--ink, #101116);
-  scale: 1.08;
+  color: #7442e8;
+  font-weight: 800;
+  text-shadow: 0 0 12px rgba(141, 92, 255, .18);
 }
 
 .az-wheel-label.active span {
-  color: var(--violet, #8d5cff);
+  color: #8d5cff;
   font-size: 21px;
 }
 
@@ -376,7 +376,6 @@
 .az-rotate-hint span {
   color: var(--violet, #8d5cff);
   font-size: 18px;
-  animation: az-hint-nudge 3s ease-in-out infinite;
 }
 
 .az-rotate-hint small {
@@ -384,7 +383,9 @@
   letter-spacing: .14em;
 }
 
-/* DESKTOP RESPONSIVE */
+/* ==========================================
+   TABLET
+========================================== */
 
 @media (min-width: 1101px) {
   .az-wheel-column {
@@ -419,10 +420,6 @@
     font-size: 14px;
   }
 
-  .az-wheel-label.active span {
-    font-size: 19px;
-  }
-
   .az-chapter-panel {
     padding: 35px;
   }
@@ -437,12 +434,13 @@
 }
 
 /* ==========================================
-   MOBILE — NO OVERLAP LAYOUT
+   MOBILE — PREMIUM SEPARATED LAYOUT
 ========================================== */
 
 @media (max-width: 767px) {
+
   .az-journey {
-    padding: 115px 14px 58px;
+    padding: 105px 14px 48px;
     overflow: hidden;
   }
 
@@ -454,12 +452,9 @@
     opacity: .18;
   }
 
-  .az-journey h2 {
+  .az-title {
     font-size: clamp(42px, 10.5vw, 60px);
     line-height: 1;
-  }
-
-  .az-title {
     gap: .14em;
     flex-wrap: wrap;
   }
@@ -482,29 +477,30 @@
     font-size: 9px;
   }
 
-  /* SEPARATE WHEEL AND CARD INTO ROWS */
+  /* VERTICAL MOBILE LAYOUT */
 
   .az-interactive-layout {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 14px;
+    gap: 0;
     width: 100%;
     min-height: 0;
-    margin-top: 36px;
+    margin-top: 35px;
     overflow: visible;
     isolation: isolate;
   }
 
-  /* WHEEL GETS ITS OWN SPACE */
+  /* LARGE LEFT HALF WHEEL */
 
   .az-wheel-column {
     position: relative;
-    width: 100%;
-    height: 295px;
-    min-height: 295px;
     display: block;
+    width: 100%;
+    height: 415px;
+    min-height: 415px;
     margin: 0;
+    padding: 0;
     transform: none;
     overflow: visible;
     z-index: 1;
@@ -513,11 +509,11 @@
   .az-wheel-hint {
     position: absolute;
     top: 0;
-    left: 0;
-    margin: 0;
+    left: 4px;
     z-index: 2;
+    margin: 0;
     font-size: 9px;
-    letter-spacing: .06em;
+    letter-spacing: .08em;
     white-space: nowrap;
   }
 
@@ -528,100 +524,128 @@
 
   .az-wheel-stage {
     position: absolute;
-    top: 27px;
-    left: -135px;
-    width: 300px;
-    height: 300px;
+    top: 42px;
+    left: -160px;
+    width: 390px;
+    height: 390px;
     margin: 0;
+    padding: 0;
     aspect-ratio: 1;
-    transform: none;
     display: grid;
     place-items: center;
+    transform: none;
     overflow: visible;
     touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+  }
+
+  .az-wheel-stage.is-dragging {
+    cursor: grabbing;
   }
 
   .az-wheel {
-    --wheel-radius: 126px;
-    width: 286px;
-    height: 286px;
+    --wheel-radius: 161px;
+    position: relative;
+    width: 366px;
+    height: 366px;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(141, 92, 255, .5);
+    border-radius: 50%;
   }
 
   .az-wheel::before {
-    inset: 22px;
+    inset: 24px;
+    border-color: rgba(140, 140, 150, .28);
   }
 
   .az-wheel-label {
-    width: 72px;
-    margin: -15px -36px;
-    padding: 3px 2px;
-    font-size: 7.5px;
-    line-height: 1.15;
+    width: 90px;
+    margin: -19px -45px;
+    padding: 4px 2px;
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 1.18;
     letter-spacing: 0;
+    color: #83848c;
+    text-align: center;
     overflow-wrap: anywhere;
   }
 
   .az-wheel-label span {
-    font-size: 11px;
+    display: block;
     margin-bottom: 3px;
+    color: #999aa3;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* ACTIVE WHEEL HEADING */
+
+  .az-wheel-label.active {
+    color: #7442e8;
+    font-weight: 800;
+    text-shadow: 0 0 12px rgba(141, 92, 255, .18);
   }
 
   .az-wheel-label.active span {
-    font-size: 12px;
+    color: #8d5cff;
+    font-size: 15px;
   }
 
   .az-wheel-center {
-    width: 54px;
-    height: 54px;
-    font-size: 12px;
+    width: 64px;
+    height: 64px;
+    font-size: 15px;
   }
 
   .az-wheel-center i {
-    height: 12px;
+    height: 14px;
   }
 
   .az-wheel-caption {
     display: none;
   }
 
-  /* CARD BELOW WHEEL — RIGHT ALIGNED */
+  /* CARD — CLEARLY BELOW WHEEL */
 
   .az-chapter-panel {
     position: relative;
     z-index: 3;
-    box-sizing: border-box;
     align-self: flex-end;
     width: min(100%, 340px);
     min-width: 0;
     min-height: 0;
-    margin: 0;
-    padding: 19px 17px;
+    height: auto;
+    margin: 55px 0 0;
+    padding: 20px 18px;
     transform: none;
-    border-radius: 20px;
-    background: rgba(250, 249, 248, .98);
-    border: 1px solid rgba(141, 92, 255, .35);
+    border-radius: 22px;
+    background: #fbfafb;
+    border: 1px solid rgba(141, 92, 255, .45);
     box-shadow:
-      0 12px 32px rgba(18, 12, 38, .10),
-      0 0 18px rgba(141, 92, 255, .06);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+      0 16px 35px rgba(30, 20, 60, .10),
+      0 0 20px rgba(141, 92, 255, .06);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     overflow: hidden;
   }
 
   .az-active-chapter {
     min-height: 0;
+    height: auto;
     display: flex;
     flex-direction: column;
   }
 
   .az-chapter-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 5px;
-    font-size: 8px;
-    letter-spacing: .03em;
+    gap: 6px;
+    font-size: 9px;
   }
 
   .az-chapter-label {
@@ -629,8 +653,8 @@
   }
 
   .az-active-chapter h3 {
-    margin: 18px 0 12px;
-    font-size: clamp(22px, 5.8vw, 29px);
+    margin: 19px 0 13px;
+    font-size: clamp(22px, 5.7vw, 29px);
     font-weight: 800;
     line-height: 1.08;
     letter-spacing: -.055em;
@@ -645,21 +669,21 @@
   }
 
   .az-learn-label {
-    margin-top: 23px;
+    margin-top: 25px;
     font-size: 8px;
-    letter-spacing: .06em;
+    letter-spacing: .08em;
   }
 
   .az-active-chapter .az-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 12px;
+    gap: 7px;
+    margin-top: 13px;
   }
 
   .az-active-chapter .az-tags span {
     max-width: 100%;
-    padding: 6px 8px;
+    padding: 7px 9px;
     font-size: 8px;
     line-height: 1.3;
     white-space: normal;
@@ -667,17 +691,14 @@
   }
 
   .az-panel-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 22px;
-    padding-top: 14px;
+    margin-top: 25px;
+    padding-top: 16px;
     font-size: 8px;
   }
 
   .az-panel-footer svg {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
   }
 
   .az-rotate-hint {
@@ -685,52 +706,45 @@
   }
 }
 
-/* SMALL MOBILE */
+/* ==========================================
+   SMALL MOBILE
+========================================== */
 
 @media (max-width: 390px) {
-  .az-journey {
-    padding-left: 12px;
-    padding-right: 12px;
+
+  .az-wheel-stage {
+    left: -170px;
   }
 
   .az-wheel-column {
-    height: 285px;
-    min-height: 285px;
-  }
-
-  .az-wheel-stage {
-    left: -140px;
+    height: 415px;
+    min-height: 415px;
   }
 
   .az-chapter-panel {
     width: min(100%, 315px);
-    padding: 17px 15px;
+    margin-top: 55px;
+    padding: 18px 16px;
   }
 
   .az-active-chapter h3 {
     font-size: 23px;
   }
-
-  .az-active-chapter p {
-    font-size: 11.5px;
-  }
 }
 
-/* EXTRA SMALL MOBILE */
+/* ==========================================
+   EXTRA SMALL MOBILE
+========================================== */
 
 @media (max-width: 350px) {
-  .az-wheel-column {
-    height: 270px;
-    min-height: 270px;
-  }
 
   .az-wheel-stage {
-    left: -145px;
+    left: -180px;
   }
 
   .az-chapter-panel {
     width: min(100%, 290px);
-    padding: 15px 13px;
+    padding: 16px 14px;
   }
 
   .az-active-chapter h3 {
@@ -740,40 +754,14 @@
   .az-active-chapter p {
     font-size: 11px;
   }
-
-  .az-chapter-label {
-    display: none;
-  }
 }
 
-/* ANIMATIONS */
-
-@keyframes az-hint-pulse {
-  0%, 100% {
-    opacity: .58;
-  }
-
-  50% {
-    opacity: .86;
-  }
-}
-
-@keyframes az-hint-nudge {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(4px);
-  }
-}
+/* ACCESSIBILITY */
 
 @media (prefers-reduced-motion: reduce) {
   .az-wheel,
-  .az-wheel-hint,
-  .az-wheel-hint span,
-  .az-rotate-hint span {
-    animation: none;
-    transition: none;
+  .az-wheel-label,
+  .az-cta {
+    transition: none !important;
   }
 }
