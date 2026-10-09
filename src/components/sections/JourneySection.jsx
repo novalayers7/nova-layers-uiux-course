@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Reveal from '../shared/Reveal';
@@ -72,12 +72,12 @@ const STEP = 360 / chapters.length;
 const wrap = (value) =>
   ((value % chapters.length) + chapters.length) % chapters.length;
 
-function JourneySection() {
-  const [activeChapter, setActiveChapter] = React.useState(0);
-  const [rotation, setRotation] = React.useState(0);
+export default function JourneySection() {
+  const [activeChapter, setActiveChapter] = useState(0);
+  const [rotation, setRotation] = useState(0);
 
-  const rotationRef = React.useRef(0);
-  const drag = React.useRef({
+  const rotationRef = useRef(0);
+  const drag = useRef({
     startX: 0,
     startRotation: 0,
     active: false,
@@ -112,9 +112,13 @@ function JourneySection() {
     if (!drag.current.active) return;
 
     const distance = event.clientX - drag.current.startX;
-    if (Math.abs(distance) > 5) drag.current.moved = true;
+
+    if (Math.abs(distance) > 5) {
+      drag.current.moved = true;
+    }
 
     const next = drag.current.startRotation + distance * 0.42;
+
     updateRotation(next);
     setActiveChapter(wrap(Math.round(-next / STEP)));
   };
@@ -133,7 +137,10 @@ function JourneySection() {
   const chapter = chapters[activeChapter];
 
   return (
-    <section className="journey az-journey section-light" id="learning-process">
+    <section
+      className="journey az-journey section-light"
+      id="learning-process"
+    >
       <Reveal>
         <p className="eyebrow dark">
           <span className="eyebrow-line" />
@@ -161,7 +168,8 @@ function JourneySection() {
         </p>
 
         <a className="az-cta" href="#curriculum">
-          Explore the journey <ArrowRight size={15} />
+          Explore the journey
+          <ArrowRight size={15} />
         </a>
       </Reveal>
 
@@ -188,8 +196,10 @@ function JourneySection() {
                 return (
                   <button
                     type="button"
-                    className={`az-wheel-label ${activeChapter === index ? 'active' : ''}`}
                     key={item.number}
+                    className={`az-wheel-label ${
+                      activeChapter === index ? 'active' : ''
+                    }`}
                     style={{
                       transform: `rotate(${angle}deg) translateY(calc(var(--wheel-radius) * -1)) rotate(${-angle - rotation}deg)`,
                     }}
@@ -227,7 +237,10 @@ function JourneySection() {
               initial={{ opacity: 0, x: 18, y: 8 }}
               animate={{ opacity: 1, x: 0, y: 0 }}
               exit={{ opacity: 0, x: -18, y: -8 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.45,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             >
               <div className="az-chapter-top">
                 <span className="az-chapter-number">
@@ -267,5 +280,3 @@ function JourneySection() {
     </section>
   );
 }
-
-export default JourneySection;

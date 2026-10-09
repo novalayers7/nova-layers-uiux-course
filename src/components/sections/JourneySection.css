@@ -32,7 +32,7 @@
   z-index: 1;
 }
 
-/* HEADINGS */
+/* HEADING */
 
 .az-journey h2 {
   margin: 0;
@@ -101,7 +101,9 @@
   color: var(--violet, #8d5cff);
 }
 
-/* DESKTOP INTERACTIVE LAYOUT */
+/* ==========================================
+   DESKTOP LAYOUT
+========================================== */
 
 .az-interactive-layout {
   display: grid;
@@ -140,8 +142,6 @@
   font-size: 14px;
   animation: az-hint-nudge 3s ease-in-out infinite;
 }
-
-/* DESKTOP WHEEL */
 
 .az-wheel-stage {
   width: 760px;
@@ -262,7 +262,7 @@
   letter-spacing: .08em;
 }
 
-/* DESKTOP CHAPTER PANEL */
+/* DESKTOP CHAPTER CARD */
 
 .az-chapter-panel {
   position: relative;
@@ -384,7 +384,7 @@
   letter-spacing: .14em;
 }
 
-/* DESKTOP AND TABLET */
+/* DESKTOP RESPONSIVE */
 
 @media (min-width: 1101px) {
   .az-wheel-column {
@@ -437,13 +437,12 @@
 }
 
 /* ==========================================
-   MOBILE — SEPARATED VERTICAL ALIGNMENT
-   WHEEL UP / CARD DOWN
+   MOBILE — NO OVERLAP LAYOUT
 ========================================== */
 
 @media (max-width: 767px) {
   .az-journey {
-    padding: 155px 14px 100px;
+    padding: 115px 14px 58px;
     overflow: hidden;
   }
 
@@ -483,57 +482,59 @@
     font-size: 9px;
   }
 
-  /* TALLER MOBILE STAGE */
+  /* SEPARATE WHEEL AND CARD INTO ROWS */
 
   .az-interactive-layout {
-    position: relative;
-    display: grid;
-    grid-template-columns: 34% 66%;
-    gap: 0;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
     width: 100%;
-    min-height: 640px;
-    margin-top: 70px;
+    min-height: 0;
+    margin-top: 36px;
+    overflow: visible;
     isolation: isolate;
   }
 
-  /* LEFT WHEEL — HIGHER */
+  /* WHEEL GETS ITS OWN SPACE */
 
   .az-wheel-column {
     position: relative;
-    z-index: 1;
     width: 100%;
-    min-width: 0;
-    height: 370px;
+    height: 295px;
+    min-height: 295px;
     display: block;
-    transform: translateY(-110px);
+    margin: 0;
+    transform: none;
+    overflow: visible;
+    z-index: 1;
   }
 
   .az-wheel-hint {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
     margin: 0;
-    font-size: 8px;
-    letter-spacing: .05em;
+    z-index: 2;
+    font-size: 9px;
+    letter-spacing: .06em;
     white-space: nowrap;
   }
 
   .az-wheel-hint span {
-    margin-left: 4px;
-    font-size: 11px;
+    margin-left: 5px;
+    font-size: 12px;
   }
 
   .az-wheel-stage {
     position: absolute;
-    top: 54%;
-    left: -132px;
-    width: 286px;
-    height: 286px;
+    top: 27px;
+    left: -135px;
+    width: 300px;
+    height: 300px;
     margin: 0;
     aspect-ratio: 1;
-    transform: translateY(-50%);
+    transform: none;
     display: grid;
     place-items: center;
     overflow: visible;
@@ -541,10 +542,9 @@
   }
 
   .az-wheel {
-    --wheel-radius: 117px;
-    width: 266px;
-    height: 266px;
-    flex-shrink: 0;
+    --wheel-radius: 126px;
+    width: 286px;
+    height: 286px;
   }
 
   .az-wheel::before {
@@ -552,27 +552,27 @@
   }
 
   .az-wheel-label {
-    width: 68px;
-    margin: -15px -34px;
+    width: 72px;
+    margin: -15px -36px;
     padding: 3px 2px;
-    font-size: 7px;
-    line-height: 1.12;
+    font-size: 7.5px;
+    line-height: 1.15;
     letter-spacing: 0;
     overflow-wrap: anywhere;
   }
 
   .az-wheel-label span {
-    font-size: 10px;
+    font-size: 11px;
     margin-bottom: 3px;
   }
 
   .az-wheel-label.active span {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .az-wheel-center {
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     font-size: 12px;
   }
 
@@ -584,19 +584,20 @@
     display: none;
   }
 
-  /* RIGHT CARD — LOWER */
+  /* CARD BELOW WHEEL — RIGHT ALIGNED */
 
   .az-chapter-panel {
     position: relative;
     z-index: 3;
     box-sizing: border-box;
-    width: 100%;
+    align-self: flex-end;
+    width: min(100%, 340px);
     min-width: 0;
     min-height: 0;
     margin: 0;
-    padding: 15px 12px;
-    transform: translateY(145px);
-    border-radius: 16px;
+    padding: 19px 17px;
+    transform: none;
+    border-radius: 20px;
     background: rgba(250, 249, 248, .98);
     border: 1px solid rgba(141, 92, 255, .35);
     box-shadow:
@@ -619,47 +620,47 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 5px;
-    font-size: 7px;
+    font-size: 8px;
     letter-spacing: .03em;
   }
 
   .az-chapter-label {
-    font-size: 6px;
+    font-size: 7px;
   }
 
   .az-active-chapter h3 {
-    margin: 15px 0 10px;
-    font-size: clamp(17px, 4.3vw, 22px);
+    margin: 18px 0 12px;
+    font-size: clamp(22px, 5.8vw, 29px);
     font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -.05em;
+    line-height: 1.08;
+    letter-spacing: -.055em;
     overflow-wrap: anywhere;
   }
 
   .az-active-chapter p {
     margin: 0;
-    font-size: 10px;
-    line-height: 1.55;
+    font-size: 12px;
+    line-height: 1.6;
     color: #737780;
   }
 
   .az-learn-label {
-    margin-top: 18px;
-    font-size: 7px;
+    margin-top: 23px;
+    font-size: 8px;
     letter-spacing: .06em;
   }
 
   .az-active-chapter .az-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 10px;
+    gap: 6px;
+    margin-top: 12px;
   }
 
   .az-active-chapter .az-tags span {
     max-width: 100%;
-    padding: 5px 7px;
-    font-size: 7px;
+    padding: 6px 8px;
+    font-size: 8px;
     line-height: 1.3;
     white-space: normal;
     overflow-wrap: anywhere;
@@ -669,14 +670,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 18px;
-    padding-top: 12px;
-    font-size: 7px;
+    margin-top: 22px;
+    padding-top: 14px;
+    font-size: 8px;
   }
 
   .az-panel-footer svg {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
   }
 
   .az-rotate-hint {
@@ -687,66 +688,61 @@
 /* SMALL MOBILE */
 
 @media (max-width: 390px) {
-  .az-interactive-layout {
-    grid-template-columns: 32% 68%;
-    min-height: 620px;
+  .az-journey {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .az-wheel-column {
-    transform: translateY(-115px);
+    height: 285px;
+    min-height: 285px;
   }
 
   .az-wheel-stage {
-    left: -142px;
+    left: -140px;
   }
 
   .az-chapter-panel {
-    padding: 13px 10px;
-    transform: translateY(150px);
-    border-radius: 14px;
+    width: min(100%, 315px);
+    padding: 17px 15px;
   }
 
   .az-active-chapter h3 {
-    font-size: 17px;
+    font-size: 23px;
   }
 
   .az-active-chapter p {
-    font-size: 9.5px;
-  }
-
-  .az-active-chapter .az-tags span {
-    padding: 4px 6px;
-    font-size: 6.5px;
+    font-size: 11.5px;
   }
 }
 
 /* EXTRA SMALL MOBILE */
 
 @media (max-width: 350px) {
-  .az-interactive-layout {
-    grid-template-columns: 30% 70%;
-    min-height: 610px;
+  .az-wheel-column {
+    height: 270px;
+    min-height: 270px;
   }
 
   .az-wheel-stage {
-    left: -152px;
+    left: -145px;
   }
 
   .az-chapter-panel {
-    padding: 11px 9px;
-    transform: translateY(155px);
+    width: min(100%, 290px);
+    padding: 15px 13px;
+  }
+
+  .az-active-chapter h3 {
+    font-size: 21px;
+  }
+
+  .az-active-chapter p {
+    font-size: 11px;
   }
 
   .az-chapter-label {
     display: none;
-  }
-
-  .az-active-chapter h3 {
-    font-size: 16px;
-  }
-
-  .az-active-chapter p {
-    font-size: 9px;
   }
 }
 
