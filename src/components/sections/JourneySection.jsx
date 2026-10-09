@@ -21,19 +21,86 @@ function JourneySection() {
   const [activeChapter, setActiveChapter] = React.useState(0);
   const [rotation, setRotation] = React.useState(0);
   const drag = React.useRef({ startX: 0, startRotation: 0, active: false });
-  const panelGesture = React.useRef({ startY: 0 });
-  const wheelLock = React.useRef(0);
-  const wrap = (value) => (value + chapters.length) % chapters.length;
-  const selectChapter = (index) => { setActiveChapter(index); setRotation(-index * (360 / chapters.length)); };
-  const changeChapter = (direction) => selectChapter(wrap(activeChapter + direction));
-  const handlePanelWheel = () => {};
-  const handlePanelPointerDown = () => {};
-  const handlePanelPointerUp = () => {};
-  const startDrag = (event) => { drag.current = { startX: event.clientX, startRotation: rotation, active: true }; event.currentTarget.setPointerCapture(event.pointerId); };
-  const moveDrag = (event) => { if (!drag.current.active) return; const next = drag.current.startRotation + (event.clientX - drag.current.startX) * .42; setRotation(next); setActiveChapter(wrap(Math.round(-next / (360 / chapters.length)))); };
-  const endDrag = () => { if (!drag.current.active) return; drag.current.active = false; selectChapter(wrap(Math.round(-rotation / (360 / chapters.length)))); };
+  const wrap = (value) => ((value % chapters.length) + chapters.length) % chapters.length;
+  const selectChapter = (index) => {
+    setActiveChapter(index);
+    setRotation(-index * (360 / chapters.length));
+  };
+  const startDrag = (event) => {
+    if (event.target.closest('button')) return;
+    drag.current = { startX: event.clientX, startRotation: rotation, active: true };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const moveDrag = (event) => {
+    if (!drag.current.active) return;
+    const next = drag.current.startRotation + (event.clientX - drag.current.startX) * 0.42;
+    setRotation(next);
+    setActiveChapter(wrap(Math.round(-next / (360 / chapters.length))));
+  };
+  const endDrag = () => {
+    if (!drag.current.active) return;
+    drag.current.active = false;
+    const index = wrap(Math.round(-rotation / (360 / chapters.length)));
+    selectChapter(index);
+  };
   const chapter = chapters[activeChapter];
-   return <section className="journey az-journey section-light" id="learning-process"><Reveal><p className="eyebrow dark"><span className="eyebrow-line"></span> the Nova Layers method</p><h2 className="az-title"><span>FROM</span><span className="az-title-sequence"><span>A</span><em>→</em><span>Z</span></span></h2><h3 className="az-subheading">Everything you need to become a modern UI/UX designer.</h3><p className="az-description">From your first sketch to a complete digital product, learn the strategy, research, interface design, Figma, prototyping, design systems, AI workflows and real-world product thinking behind professional UI/UX.</p><a className="az-cta" href="#curriculum">Explore the journey <ArrowRight size={15} /></a></Reveal><div className="az-interactive-layout"><div className="az-wheel-column"><div className="az-wheel-hint">DRAG TO EXPLORE <span>↕</span></div><div className="az-wheel-stage" onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag}><div className="az-wheel" style={{ transform: `rotate(${rotation}deg)` }}>{chapters.map((item, index) => { const angle = index * (360 / chapters.length); return <button className={`az-wheel-label ${activeChapter === index ? 'active' : ''}`} key={item.number} style={{ transform: `rotate(${angle}deg) translateY(calc(var(--wheel-radius) * -1)) rotate(${-angle - rotation}deg)` }} onPointerDown={event => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); selectChapter(index); }}><span>{item.number}</span>{item.title}</button>; })}<div className="az-wheel-center"><span>A</span><i></i><span>Z</span></div></div></div><div className="az-wheel-caption">10 chapters / one complete practice</div></div><div className="az-chapter-panel" onWheel={handlePanelWheel} onPointerDown={handlePanelPointerDown} onPointerUp={handlePanelPointerUp}><AnimatePresence mode="wait"><motion.article key={chapter.number} className="az-active-chapter" initial={{ opacity: 0, x: 18, y: 8 }} animate={{ opacity: 1, x: 0, y: 0 }} exit={{ opacity: 0, x: -18, y: -8 }} transition={{ duration: .45, ease: [0.22, 1, 0.36, 1] }}><div className="az-chapter-top"><span className="az-chapter-number">CHAPTER {chapter.number}</span><span className="az-chapter-label">NOVA LAYERS / A–Z</span></div><h3>{chapter.title}</h3><p>{chapter.text}</p><div className="az-learn-label">WHAT YOU'LL LEARN</div><div className="az-tags">{chapter.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="az-panel-footer"><span>UI/UX DESIGN + AI</span><ArrowRight size={16} /></div><div className="az-rotate-hint"><span>↕</span><small>ROTATE TO EXPLORE</small></div></motion.article></AnimatePresence></div></div></section>;
+
+  return (
+    <section className="journey az-journey section-light" id="learning-process">
+      <Reveal>
+        <p className="eyebrow dark"><span className="eyebrow-line" /> the Nova Layers method</p>
+        <h2 className="az-title"><span>FROM</span><span className="az-title-sequence"><span>A</span><em>→</em><span>Z</span></span></h2>
+        <h3 className="az-subheading">Everything you need to become a modern UI/UX designer.</h3>
+        <p className="az-description">From your first sketch to a complete digital product, learn the strategy, research, interface design, Figma, prototyping, design systems, AI workflows and real-world product thinking behind professional UI/UX.</p>
+        <a className="az-cta" href="#curriculum">Explore the journey <ArrowRight size={15} /></a>
+      </Reveal>
+      <div className="az-interactive-layout">
+        <div className="az-wheel-column">
+          <div className="az-wheel-hint">DRAG TO EXPLORE <span>↕</span></div>
+          <div className="az-wheel-stage" onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag}>
+            <div className="az-wheel" style={{ transform: `rotate(${rotation}deg)` }}>
+              {chapters.map((item, index) => {
+                const angle = index * (360 / chapters.length);
+                return (
+                  <button
+                    type="button"
+                    className={`az-wheel-label ${activeChapter === index ? 'active' : ''}`}
+                    key={item.number}
+                    style={{ transform: `rotate(${angle}deg) translateY(calc(var(--wheel-radius) * -1)) rotate(${-angle - rotation}deg)` }}
+                    onPointerDown={(event) => event.stopPropagation()}
+                    onClick={(event) => { event.stopPropagation(); selectChapter(index); }}
+                    aria-pressed={activeChapter === index}
+                  ><span>{item.number}</span>{item.title}</button>
+                );
+              })}
+              <div className="az-wheel-center"><span>A</span><i /><span>Z</span></div>
+            </div>
+          </div>
+          <div className="az-wheel-caption">10 chapters / one complete practice</div>
+        </div>
+        <div className="az-chapter-panel">
+          <AnimatePresence mode="wait">
+            <motion.article
+              key={chapter.number}
+              className="az-active-chapter"
+              initial={{ opacity: 0, x: 18, y: 8 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              exit={{ opacity: 0, x: -18, y: -8 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="az-chapter-top"><span className="az-chapter-number">CHAPTER {chapter.number}</span><span className="az-chapter-label">NOVA LAYERS / A–Z</span></div>
+              <h3>{chapter.title}</h3>
+              <p>{chapter.text}</p>
+              <div className="az-learn-label">WHAT YOU'LL LEARN</div>
+              <div className="az-tags">{chapter.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+              <div className="az-panel-footer"><span>UI/UX DESIGN + AI</span><ArrowRight size={16} /></div>
+              <div className="az-rotate-hint"><span>↕</span><small>ROTATE TO EXPLORE</small></div>
+            </motion.article>
+          </AnimatePresence>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default JourneySection;

@@ -1,2 +1,457 @@
 
-.footer { padding:50px max(32px,calc((100% - 1216px)/2)) 25px; }.footer-top { display:grid; grid-template-columns:2fr 2fr 1fr 1fr; gap:30px; padding-bottom:70px; }.footer-top > p { margin:0; color:#8f949f; font-size:13px; line-height:1.6; }.footer-links { display:flex; flex-direction:column; gap:12px; color:#8f949f; font:10px 'DM Mono',monospace; text-transform:uppercase; }.footer-links a:hover { color:var(--lime); }.footer-bottom { display:flex; justify-content:space-between; padding-top:18px; border-top:1px solid var(--dark-line); color:#737986; font:9px 'DM Mono',monospace; text-transform:uppercase; }.footer-bottom span:last-child { display:flex; align-items:center; gap:7px; color:var(--lime); }@media (max-width:900px) {.footer-top { grid-template-columns:1fr 1fr; } }@media (max-width:900px) {.footer-top > p { grid-column:2; } }@media (max-width:900px) {.footer-links { grid-row:2; } }@media (max-width:640px) {.footer { padding-left:20px; padding-right:20px; } }@media (max-width:640px) {.footer-top { grid-template-columns:1fr 1fr; gap:40px 20px; } }@media (max-width:640px) {.footer-top > p { grid-column:1 / -1; grid-row:2; } }@media (max-width:640px) {.footer-links { grid-row:3; } }@media (max-width:640px) {.footer-bottom { display:block; line-height:1.8; } }@media (max-width:640px) {.footer-bottom span { display:block; } }@media (max-width:640px) {.footer-bottom span:last-child { margin-top:8px; } }@media (max-width:900px) {.footer-top > .logo { grid-column:1; grid-row:1; } }@media (max-width:640px) {.footer-top > .logo { grid-row:1; } }
+/* =====================================
+   NOVA LAYERS - FOOTER
+===================================== */
+
+.footer {
+  padding: 50px max(32px, calc((100% - 1216px) / 2)) 25px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  gap: 30px;
+  padding-bottom: 70px;
+}
+
+.footer-top > p {
+  margin: 0;
+  color: #8f949f;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.footer-description {
+  display: block;
+  max-width: 270px;
+  margin-top: 18px;
+  color: #737986;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  color: #8f949f;
+  font: 10px 'DM Mono', monospace;
+  text-transform: uppercase;
+}
+
+.footer-link-title {
+  color: #f1f2f4;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+
+.footer-links a,
+.footer-privacy-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #8f949f;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.footer-links a:hover,
+.footer-privacy-trigger:hover {
+  color: var(--lime, #d4ff5a);
+}
+
+.footer-privacy-trigger {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.footer-phone {
+  white-space: nowrap;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid var(--dark-line, #292929);
+  color: #737986;
+  font: 9px 'DM Mono', monospace;
+  text-transform: uppercase;
+}
+
+.footer-bottom span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--lime, #d4ff5a);
+}
+
+/* =====================================
+   PRIVACY MODAL OVERLAY
+===================================== */
+
+.privacy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: privacyFadeIn 0.3s ease both;
+}
+
+.privacy-modal {
+  width: 100%;
+  max-width: 780px;
+  max-height: min(85vh, 850px);
+  max-height: min(85dvh, 850px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #f4f4f4;
+  background: #111214;
+  border: 1px solid #303237;
+  border-radius: 16px;
+  box-shadow: 0 25px 100px rgba(0, 0, 0, 0.65);
+  animation: privacySlideIn 0.35s ease both;
+}
+
+/* Modal header */
+
+.privacy-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 34px 38px 28px;
+  border-bottom: 1px solid #292b30;
+}
+
+.privacy-heading-group {
+  min-width: 0;
+}
+
+.privacy-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--lime, #d4ff5a);
+  font: 10px 'DM Mono', monospace;
+  letter-spacing: 2px;
+}
+
+.privacy-modal h2 {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+}
+
+.privacy-modal h2 span {
+  color: var(--lime, #d4ff5a);
+}
+
+.privacy-close {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: #1d1f22;
+  border: 1px solid #36383c;
+  border-radius: 50%;
+  color: #f5f5f5;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.privacy-close:hover {
+  background: var(--lime, #d4ff5a);
+  color: #101010;
+  transform: rotate(90deg);
+}
+
+/* Scrollable content */
+
+.privacy-modal-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 32px 38px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #45484d #151618;
+}
+
+.privacy-modal-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.privacy-modal-content::-webkit-scrollbar-thumb {
+  background: #45484d;
+  border-radius: 8px;
+}
+
+.privacy-intro {
+  margin: 0 0 36px;
+  color: #b3b6bd;
+  font-size: 14px;
+  line-height: 1.9;
+  max-width: 620px;
+}
+
+.privacy-section {
+  display: grid;
+  grid-template-columns: 45px minmax(0, 1fr);
+  gap: 14px;
+  padding: 24px 0;
+  border-top: 1px solid #292b30;
+}
+
+.privacy-number {
+  color: var(--lime, #d4ff5a);
+  font: 11px 'DM Mono', monospace;
+  padding-top: 4px;
+}
+
+.privacy-section h3 {
+  margin: 0 0 12px;
+  color: #f1f1f1;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+}
+
+.privacy-section p {
+  margin: 0 0 12px;
+  color: #9fa3ab;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.privacy-section p:last-child {
+  margin-bottom: 0;
+}
+
+.privacy-contact-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 12px;
+  color: var(--lime, #d4ff5a);
+  font-size: 13px;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.privacy-contact-link:hover {
+  text-decoration: underline;
+}
+
+/* Modal footer */
+
+.privacy-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 38px;
+  border-top: 1px solid #292b30;
+  background: #141517;
+}
+
+.privacy-modal-footer > span {
+  color: #747983;
+  font: 9px 'DM Mono', monospace;
+  letter-spacing: 1px;
+}
+
+.privacy-done {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: var(--lime, #d4ff5a);
+  color: #101010;
+  border: 0;
+  border-radius: 5px;
+  font: 10px 'DM Mono', monospace;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.privacy-done:hover {
+  background: #fff;
+}
+
+/* Animations */
+
+@keyframes privacyFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes privacySlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 900px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-top > p {
+    grid-column: 2;
+  }
+
+  .footer-links {
+    grid-row: 2;
+  }
+
+  .footer-top > .nova-logo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 20px;
+    padding-bottom: 50px;
+  }
+
+  .footer-top > .nova-logo {
+    grid-row: 1;
+  }
+
+  .footer-top > p {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .footer-links {
+    grid-row: 3;
+  }
+
+  .footer-bottom {
+    display: block;
+    line-height: 1.8;
+  }
+
+  .footer-bottom span {
+    display: block;
+  }
+
+  .footer-bottom span:last-child {
+    display: flex;
+    margin-top: 8px;
+  }
+
+  .privacy-overlay {
+    padding: 12px;
+    align-items: center;
+  }
+
+  .privacy-modal {
+    max-height: 90vh;
+    max-height: 90dvh;
+    border-radius: 12px;
+  }
+
+  .privacy-modal-header {
+    padding: 25px 22px 22px;
+  }
+
+  .privacy-modal h2 {
+    font-size: 30px;
+    letter-spacing: -1px;
+  }
+
+  .privacy-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.2px;
+  }
+
+  .privacy-modal-content {
+    padding: 24px 22px;
+  }
+
+  .privacy-intro {
+    font-size: 13px;
+  }
+
+  .privacy-section {
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 10px;
+    padding: 22px 0;
+  }
+
+  .privacy-section h3 {
+    font-size: 14px;
+  }
+
+  .privacy-section p {
+    font-size: 12px;
+  }
+
+  .privacy-modal-footer {
+    padding: 16px 22px;
+  }
+
+  .privacy-modal-footer > span {
+    font-size: 8px;
+    max-width: 120px;
+    line-height: 1.6;
+  }
+
+  .privacy-done {
+    padding: 11px 13px;
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .privacy-overlay,
+  .privacy-modal {
+    animation: none;
+  }
+
+  .privacy-close,
+  .privacy-done {
+    transition: none;
+  }
+}
