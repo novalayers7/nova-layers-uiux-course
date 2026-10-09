@@ -71,15 +71,16 @@ export default async function handler(request, response) {
     `Timing: ${timing.trim()}`,
   ].join('\n');
 
-  try {
-    const resend = new Resend(apiKey);
-    const { data, error } = await resend.emails.send({
-      from,
-      to: ['novalayersteam@gmail.com'],
-      replyTo: email.trim(),
-      subject: 'New UI/UX Course Reservation',
-      text,
-    });
+try {
+  const resend = new Resend(apiKey);
+
+  const { data, error } = await resend.emails.send({
+    from: 'Nova Layers <courses@novalayers.in>',
+    to: ['novalayersteam@gmail.com'],
+    replyTo: email.trim(),
+    subject: 'New UI/UX Course Reservation',
+    text,
+  });
 
     if (error) {
       const safeMessage = sanitizeDiagnostic(error.message, apiKey);
