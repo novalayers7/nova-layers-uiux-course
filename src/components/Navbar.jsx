@@ -8,7 +8,7 @@ const links = [
   ['What you\'ll learn', '#what-youll-learn'],
   ['Learning process', '#learning-process'],
   ['About me', '#about-me'],
-  ['Contact', '#contact'],
+  ['Contact', '/contact'],
 ];
 
 export default function Navbar() {
@@ -44,7 +44,7 @@ export default function Navbar() {
           {active === href && <motion.span className="nav-indicator" layoutId="nav-indicator" transition={{ type: 'spring', stiffness: 420, damping: 32 }} />}
         </a>)}
       </nav>
-      <a className="nav-cta" href="#enroll" onClick={() => selectLink('#enroll')}>Enroll now <ArrowUpRight size={15} /></a>
+      <a className="nav-cta" href="/contact" onClick={() => selectLink('/contact')}>Enroll now <ArrowUpRight size={15} /></a>
       <button className={`menu-button ${open ? 'is-open' : ''}`} aria-label={open ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={open} onClick={() => setOpen(!open)}>
         <span></span><span></span>
       </button>
@@ -55,7 +55,7 @@ export default function Navbar() {
           {links.map(([label, href], index) => <motion.a key={href} href={href} onClick={() => selectLink(href)} variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -18 } }} transition={{ duration: .35 }}>
             <span>0{index + 1}</span>{label}<ArrowUpRight size={18} />
           </motion.a>)}
-          <motion.a className="mobile-enroll" href="#enroll" onClick={() => selectLink('#enroll')} variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -18 } }} transition={{ duration: .35 }}>Enroll now <ArrowUpRight size={17} /></motion.a>
+          <motion.a className="mobile-enroll" href="/contact" onClick={() => selectLink('/contact')} variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -18 } }} transition={{ duration: .35 }}>Enroll now <ArrowUpRight size={17} /></motion.a>
         </motion.nav>
         <div className="mobile-nav-note">UI/UX + AI COURSE / 18 CLASSES</div>
       </motion.div>}
